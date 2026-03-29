@@ -1,58 +1,349 @@
+/* --- VARIABLES GLOBALES (Colores y Estilos) --- */
 :root {
-    --purple: #6c5ce7;
-    --purple-light: #a29bfe;
+    --purple: #6c5ce7;       /* Morado Principal */
+    --purple-dark: #4834d4;  /* Morado Oscuro */
+    --purple-light: #a29bfe; /* Morado Suave */
     --white: #ffffff;
-    --gray: #f4f7f6;
-    --text: #2d3436;
+    --gray-bg: #f8f9fa;      /* Gris muy claro para fondos */
+    --gray-border: #e9ecef;
+    --text-dark: #2d3436;
+    --text-muted: #636e72;
+    --success: #00b894;      /* Verde para ganancias */
+    --danger: #d63031;       /* Rojo para pérdidas */
+    --shadow: 0 10px 20px rgba(108, 92, 231, 0.1);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+/* --- RESETEO BÁSICO --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, sans-serif;
+}
 
-body { background-color: var(--white); color: var(--text); padding-bottom: 50px; }
+body {
+    background-color: var(--white);
+    color: var(--text-dark);
+    line-height: 1.6;
+    padding-bottom: 40px;
+}
 
-.container { width: 92%; max-width: 450px; margin: 0 auto; }
+.container {
+    width: 92%;
+    max-width: 450px; /* Optimizado para móviles */
+    margin: 0 auto;
+}
 
-/* Navegación */
-nav { background: white; padding: 15px 0; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100; }
-.nav-container { display: flex; justify-content: space-between; align-items: center; }
-.logo { font-weight: 800; font-size: 1.4rem; color: var(--purple); }
-.logo span { color: var(--text); }
+/* --- NAVEGACIÓN --- */
+nav {
+    background: var(--white);
+    padding: 15px 0;
+    border-bottom: 1px solid var(--gray-border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
 
-/* Card Principal */
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--purple);
+    letter-spacing: -1px;
+}
+
+.logo span {
+    color: var(--text-dark);
+}
+
+/* --- TARJETA DE SALDO (GLASSMORPHISM) --- */
 .balance-card {
-    background: linear-gradient(135deg, var(--purple), #4834d4);
-    color: white; padding: 25px; border-radius: 20px; margin-top: 20px;
-    box-shadow: 0 15px 30px rgba(108, 92, 231, 0.2);
+    background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+    color: var(--white);
+    padding: 25px;
+    border-radius: 24px;
+    margin-top: 20px;
+    box-shadow: 0 15px 35px rgba(108, 92, 231, 0.3);
 }
-.currencies { display: flex; justify-content: space-between; margin-top: 15px; }
-.coin span { font-size: 0.7rem; opacity: 0.9; display: block; }
-.congelado-info { margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; }
 
-/* Secciones */
-.section-box { background: var(--gray); padding: 20px; border-radius: 18px; margin-top: 20px; border: 1px solid #ececec; }
-h3 { font-size: 1.1rem; margin-bottom: 10px; color: var(--purple); }
+.balance-card p {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    font-weight: 400;
+}
 
-/* Inputs y Botones */
-input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #ddd; outline: none; }
-.btn-purple { background: var(--purple); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; width: 100%; }
-.btn-purple-sm { background: var(--purple); color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; margin-top: 5px; }
-.btn-outline-sm { background: transparent; border: 1px solid var(--purple); color: var(--purple); width: 100%; padding: 10px; border-radius: 10px; margin-top: 10px; }
+.currencies {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
 
-/* Chat P2P */
-.chat-area { height: 120px; background: white; border-radius: 10px; padding: 10px; overflow-y: auto; font-size: 0.85rem; border: 1px solid #eee; }
-.chat-input { display: flex; gap: 5px; margin-top: 10px; }
-.chat-input input { margin: 0; }
-.chat-input button { background: var(--purple); color: white; border: none; border-radius: 10px; padding: 0 15px; }
+.coin span {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 2px;
+    opacity: 0.8;
+}
 
-/* Juegos */
-.game-btns { display: flex; gap: 10px; margin-top: 10px; }
-.btn-game { flex: 1; padding: 15px; border: none; border-radius: 10px; background: white; color: var(--purple); font-weight: bold; border: 1px solid var(--purple); cursor: pointer; }
+.coin h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
 
-/* Modales */
-.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; z-index: 1000; }
-.modal-content { background: white; padding: 25px; border-radius: 20px; width: 85%; }
+.congelado-info {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+}
 
-/* Staking */
-.staking-grid { display: flex; gap: 10px; }
-.opt { flex: 1; background: white; padding: 10px; border-radius: 10px; text-align: center; border: 1px solid #eee; font-size: 0.8rem; font-weight: 600; }
-.opt span { display: block; color: var(--purple); font-size: 1rem; }
+/* --- SECCIONES Y CONTENEDORES --- */
+.section-box {
+    background: var(--gray-bg);
+    padding: 20px;
+    border-radius: 20px;
+    margin-top: 20px;
+    border: 1px solid var(--gray-border);
+}
+
+h3 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    color: var(--purple-dark);
+    font-weight: 700;
+}
+
+/* --- INPUTS Y FORMULARIOS --- */
+input, select {
+    width: 100%;
+    padding: 14px;
+    margin: 8px 0;
+    border-radius: 12px;
+    border: 1px solid var(--gray-border);
+    background: var(--white);
+    font-size: 1rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: var(--purple);
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+}
+
+label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-left: 5px;
+}
+
+/* --- BOTONES --- */
+button {
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-purple {
+    background: var(--purple);
+    color: var(--white);
+    padding: 14px;
+    border-radius: 14px;
+    width: 100%;
+    font-size: 1rem;
+}
+
+.btn-purple:active {
+    transform: scale(0.98);
+    background: var(--purple-dark);
+}
+
+.btn-purple-sm {
+    background: var(--purple);
+    color: var(--white);
+    padding: 12px;
+    border-radius: 10px;
+    width: 100%;
+    font-size: 0.9rem;
+}
+
+.btn-outline-sm {
+    background: transparent;
+    border: 1.5px solid var(--purple);
+    color: var(--purple);
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+    font-size: 0.9rem;
+}
+
+/* --- CHAT P2P --- */
+.chat-area {
+    height: 150px;
+    background: var(--white);
+    border-radius: 12px;
+    padding: 15px;
+    overflow-y: auto;
+    font-size: 0.85rem;
+    border: 1px solid var(--gray-border);
+    margin-bottom: 10px;
+}
+
+.msg-system {
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: center;
+    font-size: 0.75rem;
+}
+
+.chat-input {
+    display: flex;
+    gap: 8px;
+}
+
+.chat-input input {
+    margin: 0;
+    flex: 1;
+}
+
+.chat-input button {
+    background: var(--purple);
+    color: var(--white);
+    padding: 0 15px;
+    border-radius: 12px;
+}
+
+/* --- STAKING (CONGELAR) --- */
+.staking-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.opt {
+    background: var(--white);
+    padding: 12px 5px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid var(--gray-border);
+    cursor: pointer;
+}
+
+.opt:hover {
+    border-color: var(--purple);
+}
+
+.opt b {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.opt span {
+    display: block;
+    color: var(--purple);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+/* --- JUEGOS (EMULADORES) --- */
+.game-btns {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-game {
+    flex: 1;
+    padding: 15px;
+    border-radius: 12px;
+    background: var(--white);
+    color: var(--purple);
+    border: 2px solid var(--purple);
+    font-weight: bold;
+}
+
+.btn-game:active {
+    background: var(--purple);
+    color: var(--white);
+}
+
+#resultado-juego {
+    text-align: center;
+    margin-top: 15px;
+    font-weight: 700;
+    min-height: 24px;
+}
+
+/* --- PANEL DE ADMINISTRADOR --- */
+.admin-body {
+    background-color: #f1f2f6;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+}
+
+table {
+    width: 100%;
+    margin-top: 15px;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th {
+    background: var(--purple);
+    color: white;
+    padding: 10px;
+    font-size: 0.75rem;
+    text-align: left;
+}
+
+td {
+    padding: 10px;
+    font-size: 0.75rem;
+    border-bottom: 1px solid var(--gray-border);
+}
+
+/* --- MODALES --- */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.modal-content {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 28px;
+    width: 88%;
+    max-width: 380px;
+    text-align: center;
+}
+
+.modal-content h2 {
+    margin-bottom: 15px;
+    color: var(--purple-dark);
+}
