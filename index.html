@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagos Cuba | Sistema P2P</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Cuba-Pay | Sistema de Pagos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,65 +12,78 @@
     <nav>
         <div class="container nav-container">
             <div class="logo">Cuba<span>Pay</span></div>
-            <div id="auth-buttons">
-                <button onclick="showModal('login')" class="btn-outline">Entrar</button>
-                <button onclick="showModal('register')" class="btn-purple">Crear Cuenta</button>
+            <div id="user-info">
+                <button onclick="abrirAuth()" class="btn-purple">Mi Cuenta</button>
             </div>
         </div>
     </nav>
 
-    <main class="container" id="main-panel">
+    <main class="container">
         <section class="balance-card">
             <p>Saldo Disponible</p>
             <div class="currencies">
-                <div class="coin"><span>CUP</span> <h2 id="bal-cup">0.00</h2></div>
-                <div class="coin"><span>MLC</span> <h2 id="bal-mlc">0.00</h2></div>
-                <div class="coin"><span>MK</span> <h2 id="bal-mk">0.00</h2></div>
+                <div class="coin"><span>CUP</span> <h2 id="bal-cup">1000</h2></div>
+                <div class="coin"><span>MLC</span> <h2 id="bal-mlc">50</h2></div>
+                <div class="coin"><span>MK</span> <h2 id="bal-mk">100</h2></div>
+            </div>
+            <div class="congelado-info">
+                <small>Saldo Congelado: <span id="bal-congelado">0</span> CUP</small>
             </div>
         </section>
 
-        <section class="grid-tools">
-            <div class="tool-box">
-                <h3>Intercambio P2P</h3>
-                <p>Comisión: 1% por operación</p>
-                <button class="btn-purple-sm" onclick="openP2P()">Ir al Mercado</button>
-            </div>
+        <section class="section-box">
+            <h3>Retirar / Convertir</h3>
+            <p>Comisión fija: 5.00 CUP</p>
+            <input type="number" id="monto-operacion" placeholder="Monto a retirar/cambiar">
+            <select id="via-pago">
+                <option value="transfer">Mi Transfer</option>
+                <option value="tarjeta">Tarjeta (CUP/MLC)</option>
+            </select>
+            <button class="btn-purple-sm" onclick="procesarRetiro()">Confirmar Retiro</button>
+        </section>
 
-            <div class="tool-box">
-                <h3>Retirar Saldo</h3>
-                <p>Tarjeta / Mi Transfer</p>
-                <select id="metodo-retiro">
-                    <option value="transfer">Mi Transfer</option>
-                    <option value="card">Tarjeta (CUP/MLC)</option>
-                </select>
-                <button class="btn-purple-sm">Configurar Retiro</button>
+        <section class="section-box">
+            <h3>Mercado P2P (1% Comis.)</h3>
+            <div id="chat-box" class="chat-area">
+                <p class="msg-system">Sistema: Esperando oferta P2P...</p>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chat-msg" placeholder="Escribe al vendedor...">
+                <button onclick="enviarMensaje()">Surgir</button>
+            </div>
+            <button class="btn-outline-sm" onclick="congelarP2P()">Aceptar Oferta y Congelar Saldo</button>
+        </section>
+
+        <section class="section-box staking">
+            <h3>Bonificación (Congelar Saldo)</h3>
+            <div class="staking-grid">
+                <div class="opt" onclick="congelarInversion(15, 7)">15 días <span>7%</span></div>
+                <div class="opt" onclick="congelarInversion(30, 15)">30 días <span>15%</span></div>
+                <div class="opt" onclick="congelarInversion(90, 25)">3 meses <span>25%</span></div>
             </div>
         </section>
 
-        <section class="staking">
-            <h3>Bonificación por Ahorro (Congelar)</h3>
-            <div class="staking-options">
-                <div class="opt"><span>15 días</span> <strong>7%</strong></div>
-                <div class="opt"><span>30 días</span> <strong>15%</strong></div>
-                <div class="opt"><span>3 meses</span> <strong>25%</strong></div>
+        <section class="section-box">
+            <h3>Emulador de Apuestas</h3>
+            <p>Min: 5 | Max: 200</p>
+            <input type="number" id="apuesta-monto" placeholder="Cantidad a apostar">
+            <div class="game-btns">
+                <button class="btn-game" onclick="jugar(1)">Cara</button>
+                <button class="btn-game" onclick="jugar(2)">Cruz</button>
             </div>
-            <button class="btn-outline-sm">Congelar Saldo ahora</button>
+            <p id="resultado-juego"></p>
         </section>
     </main>
 
     <div id="modal-auth" class="modal">
         <div class="modal-content">
-            <h2 id="modal-title">Crear Cuenta</h2>
-            <input type="email" id="email" placeholder="Correo electrónico">
-            <input type="password" id="pass" placeholder="Contraseña">
-            <button class="btn-purple" id="btn-action">Confirmar</button>
-            <button onclick="closeModal()" class="btn-close">Cerrar</button>
+            <h2>Acceso Seguro</h2>
+            <input type="email" id="email" placeholder="Email">
+            <input type="password" id="pass" placeholder="Password">
+            <button class="btn-purple" onclick="cerrarAuth()">Entrar</button>
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
