@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagos Cuba | Sistema P2P</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <div class="container nav-container">
+            <div class="logo">Cuba<span>Pay</span></div>
+            <div id="auth-buttons">
+                <button onclick="showModal('login')" class="btn-outline">Entrar</button>
+                <button onclick="showModal('register')" class="btn-purple">Crear Cuenta</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container" id="main-panel">
+        <section class="balance-card">
+            <p>Saldo Disponible</p>
+            <div class="currencies">
+                <div class="coin"><span>CUP</span> <h2 id="bal-cup">0.00</h2></div>
+                <div class="coin"><span>MLC</span> <h2 id="bal-mlc">0.00</h2></div>
+                <div class="coin"><span>MK</span> <h2 id="bal-mk">0.00</h2></div>
+            </div>
+        </section>
+
+        <section class="grid-tools">
+            <div class="tool-box">
+                <h3>Intercambio P2P</h3>
+                <p>Comisión: 1% por operación</p>
+                <button class="btn-purple-sm" onclick="openP2P()">Ir al Mercado</button>
+            </div>
+
+            <div class="tool-box">
+                <h3>Retirar Saldo</h3>
+                <p>Tarjeta / Mi Transfer</p>
+                <select id="metodo-retiro">
+                    <option value="transfer">Mi Transfer</option>
+                    <option value="card">Tarjeta (CUP/MLC)</option>
+                </select>
+                <button class="btn-purple-sm">Configurar Retiro</button>
+            </div>
+        </section>
+
+        <section class="staking">
+            <h3>Bonificación por Ahorro (Congelar)</h3>
+            <div class="staking-options">
+                <div class="opt"><span>15 días</span> <strong>7%</strong></div>
+                <div class="opt"><span>30 días</span> <strong>15%</strong></div>
+                <div class="opt"><span>3 meses</span> <strong>25%</strong></div>
+            </div>
+            <button class="btn-outline-sm">Congelar Saldo ahora</button>
+        </section>
+    </main>
+
+    <div id="modal-auth" class="modal">
+        <div class="modal-content">
+            <h2 id="modal-title">Crear Cuenta</h2>
+            <input type="email" id="email" placeholder="Correo electrónico">
+            <input type="password" id="pass" placeholder="Contraseña">
+            <button class="btn-purple" id="btn-action">Confirmar</button>
+            <button onclick="closeModal()" class="btn-close">Cerrar</button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
