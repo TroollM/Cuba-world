@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuba World - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #00cec9;
+            --bg: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --text: #2d3436;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e0e7ff 100%);
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: 90px;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(108, 92, 231, 0.1);
+        }
+
+        .logo-text {
+            font-weight: 800;
+            font-size: 22px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .user-pill {
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Tarjeta Principal "Glassmorphism" */
+        .main-card {
+            margin: 20px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--primary) 0%, #4834d4 100%);
+            border-radius: 35px;
+            color: white;
+            box-shadow: 0 20px 40px rgba(108, 92, 231, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: -20%; right: -10%;
+            width: 150px; height: 150px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .label { font-size: 14px; opacity: 0.8; font-weight: 300; }
+        .balance-big { font-size: 40px; font-weight: 700; margin: 5px 0; }
+        .equivalent { font-size: 13px; background: rgba(0,0,0,0.2); padding: 4px 12px; border-radius: 15px; display: inline-block; }
+
+        /* Grid de Monedas */
+        .grid-monedas {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 0 20px;
+        }
+
+        .coin-box {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.02);
+            text-align: center;
+        }
+
+        .coin-box h3 { margin: 0; font-size: 12px; color: #636e72; text-transform: uppercase; letter-spacing: 1px; }
+        .coin-box p { margin: 10px 0 0; font-size: 20px; font-weight: 700; color: var(--primary); }
+
+        /* Sección Bonificación */
+        .bonus-section {
+            margin: 25px 20px;
+        }
+
+        .section-title { font-weight: 700; font-size: 18px; margin-bottom: 15px; display: block; color: var(--primary); }
+
+        .bonus-item {
+            background: white;
+            margin-bottom: 12px;
+            padding: 15px 20px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+            transition: 0.3s;
+        }
+
+        .bonus-item:active { transform: scale(0.97); }
+
+        .bonus-info b { font-size: 16px; color: var(--text); }
+        .bonus-info span { font-size: 12px; color: #a29bfe; font-weight: 600; }
+
+        .btn-freeze {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        /* Navbar Inferior Futurista */
+        .nav-bottom {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 85%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(108, 92, 231, 0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        .nav-link { text-decoration: none; font-size: 24px; filter: grayscale(1); transition: 0.3s; }
+        .nav-link.active { filter: grayscale(0); transform: translateY(-5px); }
+
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="logo-text">CUBA WORLD</div>
+        <div class="user-pill" id="displayUser">Cargando...</div>
+    </div>
+
+    <div class="main-card">
+        <div class="label">Balance Total Disponible</div>
+        <div class="balance-big"><span id="valKIM">25.00</span> <small style="font-size: 18px;">KIM</small></div>
+        <div class="equivalent">≈ <span id="valCUP">25.00</span> Pesos CUP</div>
+    </div>
+
+    <div class="grid-monedas">
+        <div class="coin-box">
+            <h3>Saldo MK</h3>
+            <p id="valMK">0.00</p>
+        </div>
+        <div class="coin-box">
+            <h3>Saldo MBM</h3>
+            <p id="valMBM">0.00</p>
+        </div>
+    </div>
+
+    <div class="bonus-section">
+        <span class="section-title">Inversiones & Bonos</span>
+        
+        <div class="bonus-item">
+            <div class="bonus-info">
+                <b>Plan 15 Días</b><br>
+                <span>Hasta +7% Beneficio</span>
+            </div>
+            <button class="btn-freeze">Congelar</button>
+        </div>
+
+        <div class="bonus-item">
+            <div class="bonus-info">
+                <b>Plan Mensual</b><br>
+                <span>Hasta +15% Beneficio</span>
+            </div>
+            <button class="btn-freeze">Congelar</button>
+        </div>
+
+        <div class="bonus-item">
+            <div class="bonus-info">
+                <b>Plan Trimestral</b><br>
+                <span>Hasta +25% Beneficio</span>
+            </div>
+            <button class="btn-freeze">Congelar</button>
+        </div>
+    </div>
+
+    <nav class="nav-bottom">
+        <a href="#" class="nav-link active">🏠</a>
+        <a href="#" class="nav-link">🤝</a> <a href="#" class="nav-link">💳</a> <a href="#" class="nav-link">⚙️</a> </nav>
+
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        // PEGA AQUÍ TU CONFIGURACIÓN DE FIREBASE
+        const firebaseConfig = {
+            apiKey: "TU_API_KEY",
+            authDomain: "TU_PROYECTO.firebaseapp.com",
+            projectId: "TU_PROYECTO",
+            storageBucket: "TU_PROYECTO.appspot.com",
+            messagingSenderId: "ID_SENDER",
+            appId: "TU_APP_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // Escuchar datos en tiempo real del usuario logueado
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                db.collection("users").doc(user.uid).onSnapshot((doc) => {
+                    const data = doc.data();
+                    document.getElementById('displayUser').innerText = "@" + data.username;
+                    document.getElementById('valKIM').innerText = data.balanceKIM.toFixed(2);
+                    document.getElementById('valCUP').innerText = data.balanceKIM.toFixed(2);
+                    document.getElementById('valMK').innerText = data.balanceMK.toFixed(2);
+                    document.getElementById('valMBM').innerText = data.balanceMBM.toFixed(2);
+                });
+            } else {
+                window.location.href = "index.html"; // Redirigir si no está logueado
+            }
+        });
+    </script>
+</body>
+</html>
