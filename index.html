@@ -1,59 +1,105 @@
-:root {
-    --purple: #6c5ce7;
-    --purple-dark: #4834d4;
-    --white: #ffffff;
-    --bg: #f8f9fa;
-    --text: #2d3436;
-    --shadow: 0 10px 30px rgba(108, 92, 231, 0.1);
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagos-Mk | Sistema Oficial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    <div id="auth-screen" class="auth-container">
+        <div class="auth-box">
+            <div class="logo">Pagos<span>MK</span></div>
+            <h2 id="auth-title">Bienvenido</h2>
+            <p id="auth-desc">Inicia sesión para gestionar tus activos.</p>
+            
+            <div class="form-group">
+                <input type="email" id="email" placeholder="Correo electrónico">
+                <input type="password" id="pass" placeholder="Contraseña">
+                
+                <button class="btn-purple" id="btn-main-auth" onclick="iniciarSesion()">Entrar al Sistema</button>
+                
+                <div class="auth-switch">
+                    <p id="switch-text">¿No tienes cuenta? <a href="#" onclick="toggleAuth(true)">Regístrate aquí</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-body { background-color: var(--white); color: var(--text); }
+    <div id="main-panel" style="display: none;">
+        <nav>
+            <div class="container nav-container">
+                <div class="logo">Pagos<span>MK</span></div>
+                <button onclick="cerrarSesion()" class="btn-exit">Salir</button>
+            </div>
+        </nav>
 
-.container { width: 92%; max-width: 450px; margin: 0 auto; }
+        <main class="container">
+            <section class="balance-card">
+                <p>Balance de Cuenta</p>
+                <div class="currencies">
+                    <div class="coin"><span>KIM (1.0)</span> <h2 id="bal-kim">25.00</h2></div>
+                    <div class="coin"><span>UITEL (100)</span> <h2 id="bal-uitel">0.00</h2></div>
+                    <div class="coin"><span>MBM (1000)</span> <h2 id="bal-mbm">0.00</h2></div>
+                </div>
+                <div class="congelado-info">
+                    <small>Retenido/Congelado: <span id="bal-congelado">0.00</span> KIM</small>
+                </div>
+            </section>
 
-/* PANTALLA DE ENTRADA */
-.auth-container { height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg); }
-.auth-box { background: white; padding: 40px 30px; border-radius: 30px; width: 90%; max-width: 400px; text-align: center; box-shadow: var(--shadow); }
-.auth-box h2 { margin: 15px 0 5px; color: var(--purple-dark); font-size: 1.8rem; }
-.auth-box p { color: #636e72; font-size: 0.9rem; margin-bottom: 25px; }
-.auth-switch { margin-top: 20px; font-size: 0.85rem; }
-.auth-switch a { color: var(--purple); font-weight: bold; text-decoration: none; }
+            <section class="section-box">
+                <h3>Convertir MBM (Pagos Grandes)</h3>
+                <p>El MBM vale 1000 y se convierte a tu moneda principal.</p>
+                <button class="btn-purple-sm" onclick="convertirMBM()">Cambiar MBM a KIM ahora</button>
+            </section>
 
-/* PANEL PRINCIPAL */
-nav { background: white; padding: 15px 0; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100; }
-.nav-container { display: flex; justify-content: space-between; align-items: center; }
-.logo { font-weight: 800; font-size: 1.4rem; color: var(--purple); }
-.logo span { color: var(--text); }
-.btn-exit { background: none; border: 1.5px solid var(--purple); color: var(--purple); padding: 5px 15px; border-radius: 10px; font-weight: 600; }
+            <section class="section-box">
+                <h3>Retirar a Tarjeta / Mi Transfer</h3>
+                <p>Comisión fija: 5.00 KIM</p>
+                <input type="number" id="monto-retirar" placeholder="Cantidad a retirar">
+                <select id="metodo-pago">
+                    <option value="transfer">Mi Transfer</option>
+                    <option value="tarjeta">Tarjeta CUP/MLC</option>
+                </select>
+                <button class="btn-purple-sm" onclick="solicitarRetiro()">Solicitar Pago</button>
+            </section>
 
-/* TARJETA DE SALDO */
-.balance-card {
-    background: linear-gradient(135deg, var(--purple), var(--purple-dark));
-    color: white; padding: 25px; border-radius: 25px; margin-top: 20px;
-    box-shadow: 0 15px 30px rgba(108, 92, 231, 0.3);
-}
-.currencies { display: flex; justify-content: space-between; margin-top: 15px; }
-.coin span { font-size: 0.65rem; opacity: 0.8; display: block; text-transform: uppercase; }
-.coin h2 { font-size: 1.3rem; }
-.congelado-info { margin-top: 15px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.2); font-size: 0.8rem; }
+            <section class="section-box">
+                <h3>Mercado P2P (1% Comisión)</h3>
+                <div id="chat-box" class="chat-area">
+                    <p class="msg-system">Esperando conexión segura...</p>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="chat-msg" placeholder="Mensaje para el vendedor...">
+                    <button onclick="enviarMensaje()">Enviar</button>
+                </div>
+                <button class="btn-outline-sm" onclick="congelarP2P()">Aceptar Oferta y Congelar</button>
+            </section>
 
-/* SECCIONES */
-.section-box { background: var(--bg); padding: 20px; border-radius: 20px; margin-top: 20px; border: 1px solid #eee; }
-h3 { font-size: 1.1rem; color: var(--purple-dark); margin-bottom: 10px; }
+            <section class="section-box staking">
+                <h3>Bonificación por Ahorro</h3>
+                <div class="staking-grid">
+                    <div class="opt" onclick="congelarInversion(15, 7)">15d <span>7%</span></div>
+                    <div class="opt" onclick="congelarInversion(30, 15)">30d <span>15%</span></div>
+                    <div class="opt" onclick="congelarInversion(90, 25)">3m <span>25%</span></div>
+                </div>
+            </section>
 
-/* INPUTS Y BOTONES */
-input, select { width: 100%; padding: 14px; margin: 8px 0; border-radius: 12px; border: 1px solid #ddd; outline: none; }
-.btn-purple { background: var(--purple); color: white; border: none; padding: 15px; border-radius: 15px; width: 100%; font-weight: 700; font-size: 1rem; cursor: pointer; }
-.btn-purple-sm { background: var(--purple); color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; margin-top: 5px; font-weight: 600; }
+            <section class="section-box">
+                <h3>Emulador de Apuestas</h3>
+                <p>Límites: 5 - 200 KIM</p>
+                <input type="number" id="apuesta-monto" placeholder="Monto apuesta">
+                <div class="game-btns">
+                    <button class="btn-game" onclick="jugar(1)">Cara</button>
+                    <button class="btn-game" onclick="jugar(2)">Cruz</button>
+                </div>
+                <p id="res-juego"></p>
+            </section>
+        </main>
+    </div>
 
-/* STAKING */
-.staking-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
-.opt { background: white; padding: 10px; border-radius: 12px; text-align: center; border: 1px solid #eee; cursor: pointer; }
-.opt span { display: block; color: var(--purple); font-weight: 800; font-size: 1.1rem; }
-
-/* JUEGOS */
-.game-btns { display: flex; gap: 10px; margin-top: 10px; }
-.btn-game { flex: 1; padding: 15px; border-radius: 12px; border: 2px solid var(--purple); background: white; color: var(--purple); font-weight: bold; }
-#res-juego { text-align: center; margin-top: 10px; font-weight: bold; }
+    <script src="main.js"></script>
+</body>
+</html>
