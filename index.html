@@ -1,89 +1,59 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cuba-Pay | Sistema de Pagos</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+:root {
+    --purple: #6c5ce7;
+    --purple-dark: #4834d4;
+    --white: #ffffff;
+    --bg: #f8f9fa;
+    --text: #2d3436;
+    --shadow: 0 10px 30px rgba(108, 92, 231, 0.1);
+}
 
-    <nav>
-        <div class="container nav-container">
-            <div class="logo">Cuba<span>Pay</span></div>
-            <div id="user-info">
-                <button onclick="abrirAuth()" class="btn-purple">Mi Cuenta</button>
-            </div>
-        </div>
-    </nav>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
 
-    <main class="container">
-        <section class="balance-card">
-            <p>Saldo Disponible</p>
-            <div class="currencies">
-                <div class="coin"><span>CUP</span> <h2 id="bal-cup">1000</h2></div>
-                <div class="coin"><span>MLC</span> <h2 id="bal-mlc">50</h2></div>
-                <div class="coin"><span>MK</span> <h2 id="bal-mk">100</h2></div>
-            </div>
-            <div class="congelado-info">
-                <small>Saldo Congelado: <span id="bal-congelado">0</span> CUP</small>
-            </div>
-        </section>
+body { background-color: var(--white); color: var(--text); }
 
-        <section class="section-box">
-            <h3>Retirar / Convertir</h3>
-            <p>Comisión fija: 5.00 CUP</p>
-            <input type="number" id="monto-operacion" placeholder="Monto a retirar/cambiar">
-            <select id="via-pago">
-                <option value="transfer">Mi Transfer</option>
-                <option value="tarjeta">Tarjeta (CUP/MLC)</option>
-            </select>
-            <button class="btn-purple-sm" onclick="procesarRetiro()">Confirmar Retiro</button>
-        </section>
+.container { width: 92%; max-width: 450px; margin: 0 auto; }
 
-        <section class="section-box">
-            <h3>Mercado P2P (1% Comis.)</h3>
-            <div id="chat-box" class="chat-area">
-                <p class="msg-system">Sistema: Esperando oferta P2P...</p>
-            </div>
-            <div class="chat-input">
-                <input type="text" id="chat-msg" placeholder="Escribe al vendedor...">
-                <button onclick="enviarMensaje()">Surgir</button>
-            </div>
-            <button class="btn-outline-sm" onclick="congelarP2P()">Aceptar Oferta y Congelar Saldo</button>
-        </section>
+/* PANTALLA DE ENTRADA */
+.auth-container { height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg); }
+.auth-box { background: white; padding: 40px 30px; border-radius: 30px; width: 90%; max-width: 400px; text-align: center; box-shadow: var(--shadow); }
+.auth-box h2 { margin: 15px 0 5px; color: var(--purple-dark); font-size: 1.8rem; }
+.auth-box p { color: #636e72; font-size: 0.9rem; margin-bottom: 25px; }
+.auth-switch { margin-top: 20px; font-size: 0.85rem; }
+.auth-switch a { color: var(--purple); font-weight: bold; text-decoration: none; }
 
-        <section class="section-box staking">
-            <h3>Bonificación (Congelar Saldo)</h3>
-            <div class="staking-grid">
-                <div class="opt" onclick="congelarInversion(15, 7)">15 días <span>7%</span></div>
-                <div class="opt" onclick="congelarInversion(30, 15)">30 días <span>15%</span></div>
-                <div class="opt" onclick="congelarInversion(90, 25)">3 meses <span>25%</span></div>
-            </div>
-        </section>
+/* PANEL PRINCIPAL */
+nav { background: white; padding: 15px 0; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100; }
+.nav-container { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-weight: 800; font-size: 1.4rem; color: var(--purple); }
+.logo span { color: var(--text); }
+.btn-exit { background: none; border: 1.5px solid var(--purple); color: var(--purple); padding: 5px 15px; border-radius: 10px; font-weight: 600; }
 
-        <section class="section-box">
-            <h3>Emulador de Apuestas</h3>
-            <p>Min: 5 | Max: 200</p>
-            <input type="number" id="apuesta-monto" placeholder="Cantidad a apostar">
-            <div class="game-btns">
-                <button class="btn-game" onclick="jugar(1)">Cara</button>
-                <button class="btn-game" onclick="jugar(2)">Cruz</button>
-            </div>
-            <p id="resultado-juego"></p>
-        </section>
-    </main>
+/* TARJETA DE SALDO */
+.balance-card {
+    background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+    color: white; padding: 25px; border-radius: 25px; margin-top: 20px;
+    box-shadow: 0 15px 30px rgba(108, 92, 231, 0.3);
+}
+.currencies { display: flex; justify-content: space-between; margin-top: 15px; }
+.coin span { font-size: 0.65rem; opacity: 0.8; display: block; text-transform: uppercase; }
+.coin h2 { font-size: 1.3rem; }
+.congelado-info { margin-top: 15px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.2); font-size: 0.8rem; }
 
-    <div id="modal-auth" class="modal">
-        <div class="modal-content">
-            <h2>Acceso Seguro</h2>
-            <input type="email" id="email" placeholder="Email">
-            <input type="password" id="pass" placeholder="Password">
-            <button class="btn-purple" onclick="cerrarAuth()">Entrar</button>
-        </div>
-    </div>
+/* SECCIONES */
+.section-box { background: var(--bg); padding: 20px; border-radius: 20px; margin-top: 20px; border: 1px solid #eee; }
+h3 { font-size: 1.1rem; color: var(--purple-dark); margin-bottom: 10px; }
 
-    <script src="main.js"></script>
-</body>
-</html>
+/* INPUTS Y BOTONES */
+input, select { width: 100%; padding: 14px; margin: 8px 0; border-radius: 12px; border: 1px solid #ddd; outline: none; }
+.btn-purple { background: var(--purple); color: white; border: none; padding: 15px; border-radius: 15px; width: 100%; font-weight: 700; font-size: 1rem; cursor: pointer; }
+.btn-purple-sm { background: var(--purple); color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; margin-top: 5px; font-weight: 600; }
+
+/* STAKING */
+.staking-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+.opt { background: white; padding: 10px; border-radius: 12px; text-align: center; border: 1px solid #eee; cursor: pointer; }
+.opt span { display: block; color: var(--purple); font-weight: 800; font-size: 1.1rem; }
+
+/* JUEGOS */
+.game-btns { display: flex; gap: 10px; margin-top: 10px; }
+.btn-game { flex: 1; padding: 15px; border-radius: 12px; border: 2px solid var(--purple); background: white; color: var(--purple); font-weight: bold; }
+#res-juego { text-align: center; margin-top: 10px; font-weight: bold; }
